@@ -1,33 +1,5 @@
 import { getExchangeRate } from './APIs/ExchangeRate'
-import { rest } from 'msw'
-import { setupServer } from 'msw/node'
-
-const server = setupServer(
-
-  // Requests to mock
-  rest.get('https://free.currconv.com/api/v7/convert', (req, resp, ctx) => {
-    return resp(
-      ctx.status(200),
-      ctx.json({ USD_HUF: 350.3 })
-    )
-  })
-
-)
-
-// Establish requests interception layer before all tests
-beforeAll(() => {
-  server.listen()
-})
-
-/**
- * Clean up after all tests are done, preventing this
- * interception layer from affecting irrelevant tests. 
- */
-afterAll(() => {
-  server.close()
-})
-
-
+import { exchangeRateServer } from './testServers/exchangeRateServer'
 
 // TEST BLOCK
 describe('getExchangeRate fetch', () => {

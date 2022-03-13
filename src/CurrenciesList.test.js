@@ -1,37 +1,5 @@
-import { rest } from 'msw'
-import { setupServer } from 'msw/node'
 import { getCurrenciesList } from './APIs/CurrenciesList'
-
-const server = setupServer(
-
-  // Requests to mock
-  rest.get('https://free.currconv.com/api/v7/currencies', (req, resp, ctx) => {
-    return resp(
-      ctx.status(200),
-      ctx.json({
-        results: {
-          ALL: { randProp: '', id: 0 },
-          XCD: { randProp: '', id: 1 },
-          EUR: { randProp: '', id: 2 }
-        }
-      })
-    )
-  })
-
-)
-
-// Establish requests interception layer before all tests
-beforeAll(() => {
-  server.listen()
-})
-
-/**
- * Clean up after all tests are done, preventing this
- * interception layer from affecting irrelevant tests. 
- */
-afterAll(() => {
-  server.close()
-})
+import { currenciesListServer } from './testServers/currenciesListServer'
 
 // TEST BLOCK
 describe('CurrenciesList', () => {
