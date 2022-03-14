@@ -1,19 +1,30 @@
-import React, { useEffect } from 'react'
-import { logExchangeRate } from './APIs/ExchangeRate'
+import React, { useEffect, useState, useCallback } from 'react'
+import { logExchangeRate, getExchangeRate } from './APIs/ExchangeRate'
 import { logCurrenciesList } from './APIs/CurrenciesList'
 
-function App() {
+export default function App() {
+  const [exchangeRate, setExchangeRate] = useState()
+  const fromCurrency = 'USD'
+  const toCurrency = 'HUF'
+  const [fetchError, setFetchError] = useState(false)
 
-  useEffect(() => {
-    logCurrenciesList()
+  const fetchData = useCallback(async () => {
+    let rate = await getExchangeRate('USD', 'HUF')
+    console.log(rate)
+    setExchangeRate(rate)
   }, [])
 
+  useEffect(() => {
+    fetchData().catch(console.error)
+  }, [fetchData])
+
+  if (!exchangeRate) return <div>loading....</div>
 
   return (
     <div>
-      something
+      Exchange rate from {fromCurrency} to {toCurrency}: {exchangeRate}
     </div>
-  );
+  )
 }
 
-export default App;
+

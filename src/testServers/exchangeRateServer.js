@@ -7,7 +7,7 @@ const exchangeRateServer = setupServer(
   rest.get('https://free.currconv.com/api/v7/convert', (req, resp, ctx) => {
     return resp(
       ctx.status(200),
-      ctx.json({ USD_HUF: 350.3 })
+      ctx.json({ USD_HUF: 350 })
     )
   })
 
